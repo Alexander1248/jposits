@@ -276,6 +276,7 @@ JNIEXPORT jint JNICALL Java_ru_alexander1248_jposit_PositsJNI_posit32_1sqrt
 JNIEXPORT jint JNICALL Java_ru_alexander1248_jposit_PositsJNI_posit32_1exp
 (JNIEnv *, jclass, const jint val) {
     const auto p = fromJInt(val);
+    // TODO: Implement exp in posits only
     const posit32 result = exp(p.toDouble());
     return static_cast<jint>(result.value);
 }
@@ -283,6 +284,7 @@ JNIEXPORT jint JNICALL Java_ru_alexander1248_jposit_PositsJNI_posit32_1exp
 JNIEXPORT jint JNICALL Java_ru_alexander1248_jposit_PositsJNI_posit32_1log
 (JNIEnv *, jclass, const jint val) {
     const auto p = fromJInt(val);
+    // TODO: Implement log in posits only
     const posit32 result = log(p.toDouble());
     return static_cast<jint>(result.value);
 }
@@ -416,6 +418,7 @@ JNIEXPORT jshort JNICALL Java_ru_alexander1248_jposit_PositsJNI_posit16_1sqrt
 JNIEXPORT jshort JNICALL Java_ru_alexander1248_jposit_PositsJNI_posit16_1exp
 (JNIEnv *, jclass, const jshort val) {
     const auto p = fromJShort(val);
+    // TODO: Implement exp in posits only
     const posit16 result = exp(p.toDouble());
     return static_cast<jshort>(result.value);
 }
@@ -423,6 +426,7 @@ JNIEXPORT jshort JNICALL Java_ru_alexander1248_jposit_PositsJNI_posit16_1exp
 JNIEXPORT jshort JNICALL Java_ru_alexander1248_jposit_PositsJNI_posit16_1log
 (JNIEnv *, jclass, const jshort val) {
     const auto p = fromJShort(val);
+    // TODO: Implement log in posits only
     const posit16 result = log(p.toDouble());
     return static_cast<jshort>(result.value);
 }
