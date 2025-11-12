@@ -25,7 +25,7 @@ It provides full 16-bit and 32-bit Posit arithmetic implemented in native C via 
 |                               | `remainder`                            | ✅ Implemented natively  | Uses SoftPosit internal remainder logic                   |
 | **Unary Ops**                 | `abs`, `sign`, `negation`              | ✅ Implemented natively  | —                                                         |
 | **Rounding**                  | `ceil`, `floor`, `round`               | ✅ Implemented natively  | Integer rounding consistent with Posit spec               |
-| **Trigonometry**              | `sin`, `cos`, `tan`                    | ✅ Implemented           | Uses software implementation                              |
+| **Trigonometry**              | `sin`, `cos`, `tan`                    | ✅ Implemented           | Uses software implementation (intel sin approx)           |
 | **Exponential / Logarithmic** | `exp`, `log`                           | ⚠️ Partially implemented | Performed via IEEE 754 (`double`) conversion              |
 | **Root / Power**              | `sqrt`                                 | ✅ Implemented natively  | —                                                         |
 |                               | `pow`                                  | ⚠️ Partially implemented | Uses  `exp` and `log` with partial implementation         |
