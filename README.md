@@ -22,7 +22,7 @@ It provides full 16-bit and 32-bit Posit arithmetic implemented in native C via 
 ### ✅ Requirements
 
 - **Java 21+** or **Kotlin 2.2+**
-- **Gradle 8+** (comes with the project)
+- **Gradle 8+**
 - **CMake**, **Ninja**, and **GCC** or **Clang**
 
 > 🪟 For Windows users:  
