@@ -23,14 +23,14 @@ It provides full 16-bit and 32-bit Posit arithmetic implemented in native C via 
 | **Arithmetic**                | `add`, `sub`                           | ✅ Implemented natively  | Fully handled via SoftPosit                               |
 |                               | `mul`, `div`                           | ✅ Implemented natively  | Full precision Posit arithmetic                           |
 |                               | `remainder`                            | ✅ Implemented natively  | Uses SoftPosit internal remainder logic                   |
-| **Unary Ops**                 | `abs`, `sign`, `negation`              | ✅ Implemented natively  | —                                                         |
+| **Unary Ops**                 | `abs`, `sign`, `negation`              | ✅ Implemented           | —                                                         |
 | **Rounding**                  | `ceil`, `floor`, `round`               | ✅ Implemented natively  | Integer rounding consistent with Posit spec               |
 | **Trigonometry**              | `sin`, `cos`, `tan`                    | ✅ Implemented           | Uses software implementation (intel sin approx)           |
 | **Exponential / Logarithmic** | `exp`, `log`                           | ⚠️ Partially implemented | Performed via IEEE 754 (`double`) conversion              |
 | **Root / Power**              | `sqrt`                                 | ✅ Implemented natively  | —                                                         |
 |                               | `pow`                                  | ⚠️ Partially implemented | Uses  `exp` and `log` with partial implementation         |
 | **Data Structures**           | `Posit` (32-bit), `HalfPosit` (16-bit) | ✅ Implemented           | Includes full arithmetic, comparison, and conversion APIs |
-| **Conversion**                | To/from `float`, `double`              | ✅ Implemented           | IEEE 754 interop functions                                |
+| **Conversion**                | To/from `float`, `double`              | ✅ Implemented natively  | IEEE 754 interop functions                                |
 | **Future Plans**              | `atan`, `asin`, `acos`, `hypot`, `fma` | ⏳ Planned               | Will be implemented in pure Posit arithmetic              |
 
 ---
