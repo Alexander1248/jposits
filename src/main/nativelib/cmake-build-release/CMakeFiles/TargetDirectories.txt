@@ -1,0 +1,3 @@
+D:/Projects/JavaProjects/Lumi/libs/jposits/src/main/nativelib/cmake-build-release/CMakeFiles/PositsJNI_win.dir
+D:/Projects/JavaProjects/Lumi/libs/jposits/src/main/nativelib/cmake-build-release/CMakeFiles/edit_cache.dir
+D:/Projects/JavaProjects/Lumi/libs/jposits/src/main/nativelib/cmake-build-release/CMakeFiles/rebuild_cache.dir

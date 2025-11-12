@@ -1,0 +1,7 @@
+# ninja log v6
+3	458	7804549850838120	CMakeFiles/PositsJNI_win.dir/PositsJNI.cpp.obj	5972810ad021f1a3
+459	569	7804549856402621	libjposits.dll	6c0494462cceaf5c
+459	569	7804549856402621	libjposits.dll.a	6c0494462cceaf5c
+10	730	7804579119073963	CMakeFiles/PositsJNI_win.dir/PositsJNI.cpp.obj	5972810ad021f1a3
+730	910	7804579127947341	libjposits.dll	6c0494462cceaf5c
+730	910	7804579127947341	libjposits.dll.a	6c0494462cceaf5c
