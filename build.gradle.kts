@@ -42,10 +42,10 @@ tasks.register<Exec>("generateJNIHeader") {
 }
 
 // ------------------ Paths for CMake/MinGW/Ninja ------------------
-val gccPath = "D:/JetBrains/CLion/bin/mingw/bin"
-val gppPath = "D:/JetBrains/CLion/bin/mingw/bin"
-val cmakePath = "D:/JetBrains/CLion/bin/cmake/win/x64/bin"
-val ninjaPath = "D:/JetBrains/CLion/bin/ninja/win/x64"
+val gccPath = "C:/JetBrains/CLion/bin/mingw/bin"
+val gppPath = "C:/JetBrains/CLion/bin/mingw/bin"
+val cmakePath = "C:/JetBrains/CLion/bin/cmake/win/x64/bin"
+val ninjaPath = "C:/JetBrains/CLion/bin/ninja/win/x64"
 val nativeBuildDir = layout.buildDirectory.dir("native")
 val nativeSourceDirAbsolute: String = projectDir.resolve("src/main/nativelib").absolutePath
 
