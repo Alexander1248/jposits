@@ -1,7 +1,7 @@
 # jposits
 
 **jposits** is a lightweight Java/Kotlin library for working with the [Posit](https://posithub.org/docs/posit_standard.pdf) number system — a modern alternative to IEEE 754 floating-point arithmetic.  
-It provides full 16-bit and 32-bit Posit arithmetic implemented in native C via integrated [SoftPosit](https://github.com/softposit/softposit) bindings and exposed to Java through JNI.
+It provides full 16-bit and 32-bit Posit arithmetic implemented in native C via integrated [SoftPosit](https://gitlab.com/cerlane/SoftPosit) bindings and exposed to Java through JNI.
 
 ---
 
@@ -11,7 +11,7 @@ It provides full 16-bit and 32-bit Posit arithmetic implemented in native C via 
 - ⚙️ Full set of arithmetic operations:  
   `add`, `sub`, `mul`, `div`, `abs`, `sign`, `sqrt`, `sin`, `cos`, `tan`, `exp`, `log`, `pow`, `ceil`, `floor`, `round`, `remainder`  
 - 🧮 Conversion between Posit and standard IEEE 754 types (`float`, `double`)  
-- 🔁 Built-in [SoftPosit](https://github.com/softposit/softposit) native implementation — **no external installation required**  
+- 🔁 Built-in [SoftPosit](https://gitlab.com/cerlane/SoftPosit) native implementation — **no external installation required**  
 - 🧱 Cross-platform build (Windows / Linux / macOS) through **Gradle + CMake + Ninja**
 - 📦 Lightweight and dependency-free
 
@@ -98,7 +98,7 @@ They provide higher precision and dynamic range using fewer bits and simpler ari
 📚 Learn more:
 
 * [The Posit Standard (PDF)](https://posithub.org/docs/posit_standard.pdf)
-* [SoftPosit Reference Implementation](https://github.com/softposit/softposit)
+* [SoftPosit Reference Implementation](https://gitlab.com/cerlane/SoftPosit)
 
 ---
 
@@ -127,5 +127,5 @@ See [LICENSE](LICENSE) for details.
 
 ## 🤝 Acknowledgments
 
-* [SoftPosit](https://github.com/softposit/softposit) — C reference implementation of Posit arithmetic
+* [SoftPosit](https://gitlab.com/cerlane/SoftPosit) — C reference implementation of Posit arithmetic
 * John L. Gustafson — creator of the Posit number system
