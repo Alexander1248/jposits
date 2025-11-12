@@ -34,10 +34,10 @@ It provides full 16-bit and 32-bit Posit arithmetic implemented in native C via 
 To correctly build the native library, you need to specify the paths to compilers and tools like CMake and Ninja. Currently, these paths are defined as:
 
 ```kotlin
-val gccPath = "C:/Program Files/JetBrains/CLion 2023.3.4/bin/mingw/bin"
-val gppPath = "C:/Program Files/JetBrains/CLion 2023.3.4/bin/mingw/bin"
-val cmakePath = "C:/Program Files/JetBrains/CLion 2023.3.4/bin/cmake/win/x64/bin"
-val ninjaPath = "C:/Program Files/JetBrains/CLion 2023.3.4/bin/ninja/win/x64"
+val gccPath = "D:/JetBrains/CLion/bin/mingw/bin"
+val gppPath = "D:/JetBrains/CLion/bin/mingw/bin"
+val cmakePath = "D:/JetBrains/CLion/bin/cmake/win/x64/bin"
+val ninjaPath = "D:/JetBrains/CLion/bin/ninja/win/x64"
 ```
 
 ---
@@ -46,7 +46,7 @@ val ninjaPath = "C:/Program Files/JetBrains/CLion 2023.3.4/bin/ninja/win/x64"
 
 #### Windows
 
-* If you use **JetBrains CLion + MinGW**, the above paths should work out of the box.
+* If you use **JetBrains CLion + MinGW**, the above paths should work after replacing `D:/JetBrains/CLion` to your CLion path.
 * If you use a different MinGW, CMake, or Ninja installation, update paths accordingly, for example:
 
 ```kotlin
