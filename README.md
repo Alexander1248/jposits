@@ -132,6 +132,17 @@ public class Example {
 }
 ```
 
+```kotlin
+import ru.alexander1248.jposit.Posit.Companion.toPosit
+
+fun test() {
+    val a = 1.5f.toPosit()
+    val b = 2.25f.toPosit()
+    val result = a * b
+    println("Result (float): " + result.toFloat())
+}
+```
+
 ---
 
 ## ⚙️ Native library details
