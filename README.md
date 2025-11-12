@@ -21,38 +21,97 @@ It provides full 16-bit and 32-bit Posit arithmetic implemented in native C via 
 
 ### ✅ Requirements
 
-- **Java 21+** or **Kotlin 2.2+**
-- **Gradle 8+**
-- **CMake**, **Ninja**, and **GCC** or **Clang**
-
-> 🪟 For Windows users:  
-> By default, the project is preconfigured to use **JetBrains CLion toolchain**  
-> (MinGW, CMake, Ninja paths are already defined in `build.gradle.kts`).
+* **Java 21+** or **Kotlin 2.2+**
+* **Gradle 8+**
+* **CMake** (recommended 3.20+)
+* **Ninja build system**
+* **GCC / MinGW / Clang**
 
 ---
 
-### 🧰 Build steps
+### ⚙️ Configuring Paths in `build.gradle.kts`
 
-Clone the repository and build everything — including native JNI library:
+To correctly build the native library, you need to specify the paths to compilers and tools like CMake and Ninja. Currently, these paths are defined as:
+
+```kotlin
+val gccPath = "C:/Program Files/JetBrains/CLion 2023.3.4/bin/mingw/bin"
+val gppPath = "C:/Program Files/JetBrains/CLion 2023.3.4/bin/mingw/bin"
+val cmakePath = "C:/Program Files/JetBrains/CLion 2023.3.4/bin/cmake/win/x64/bin"
+val ninjaPath = "C:/Program Files/JetBrains/CLion 2023.3.4/bin/ninja/win/x64"
+```
+
+---
+
+### 💡 How to Edit Paths for Your OS and Setup
+
+#### Windows
+
+* If you use **JetBrains CLion + MinGW**, the above paths should work out of the box.
+* If you use a different MinGW, CMake, or Ninja installation, update paths accordingly, for example:
+
+```kotlin
+val gccPath = "C:/MinGW/bin"
+val gppPath = "C:/MinGW/bin"
+val cmakePath = "C:/Program Files/CMake/bin"
+val ninjaPath = "C:/Program Files/Ninja"
+```
+
+* Make sure the paths contain `gcc.exe`, `g++.exe`, `cmake.exe`, and `ninja.exe`.
+
+---
+
+#### Linux
+
+* Usually, gcc, g++, cmake, and ninja are installed globally and available in your `PATH`. You can simply set:
+
+```kotlin
+val gccPath = "/usr/bin"
+val gppPath = "/usr/bin"
+val cmakePath = "/usr/bin"
+val ninjaPath = "/usr/bin"
+```
+
+* Adjust these if your tools are in non-standard locations.
+
+---
+
+#### macOS
+
+* Similar to Linux, often installed via Homebrew:
+
+```kotlin
+val gccPath = "/usr/local/bin"
+val gppPath = "/usr/local/bin"
+val cmakePath = "/usr/local/bin"
+val ninjaPath = "/usr/local/bin"
+```
+
+---
+
+### 📦 Building the Project
+
+1. **Clone the repository:**
 
 ```bash
 git clone https://github.com/Alexander1248/jposits.git
 cd jposits
+```
+
+2. **Edit `build.gradle.kts` to set paths to your compiler and build tools**
+   (if you are on Windows, Linux, or macOS and your tools are not in standard locations).
+
+3. **Run Gradle build:**
+
+```bash
 gradle build
-````
-
-Gradle will automatically:
-
-1. Generate JNI headers (`generateJNIHeader`)
-2. Configure and build the native SoftPosit bindings via CMake (`cmakeConfigure`, `cmakeBuild`)
-3. Copy the resulting `libjposits` library into `build/resources/main/native/<os>`
-4. Package everything into the final JAR file
-
-You’ll find the ready-to-use library under:
-
 ```
-build/libs/jposits-1.0.jar
-```
+
+This will automatically:
+
+* Generate JNI headers
+* Configure and build native SoftPosit bindings via CMake and Ninja
+* Copy native libraries to `build/resources/main/native/<os>`
+* Package everything into the final JAR
 
 ---
 
@@ -86,6 +145,11 @@ If you wish to rebuild or debug the native code manually:
 
 ```bash
 gradle cmakeBuild
+```
+To regenerate JNI headers:
+
+```bash
+gradle generateJNIHeader
 ```
 
 ---
