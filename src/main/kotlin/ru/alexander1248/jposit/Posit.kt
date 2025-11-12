@@ -6,6 +6,12 @@ class Posit : Comparable<Posit> {
     private constructor(value: Int) {
         this.value = value
     }
+    constructor(value: Float) {
+        this.value = value.toPosit().value
+    }
+    constructor(value: Double) {
+        this.value = value.toPosit().value
+    }
 
     fun toFloat(): Float =
         PositsJNI.posit32_toFloat(this.value)

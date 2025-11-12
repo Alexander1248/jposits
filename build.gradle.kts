@@ -42,9 +42,10 @@ tasks.register<Exec>("generateJNIHeader") {
 }
 
 // ------------------ Paths for CMake/MinGW/Ninja ------------------
-val mingwPath = "C:/Program Files/JetBrains/CLion 2023.3.4/bin/mingw/bin"
-val cmakePath = "C:/Program Files/JetBrains/CLion 2023.3.4/bin/cmake/win/x64/bin"
-val ninjaPath = "C:/Program Files/JetBrains/CLion 2023.3.4/bin/ninja/win/x64"
+val gccPath = "D:/JetBrains/CLion/bin/mingw/bin"
+val gppPath = "D:/JetBrains/CLion/bin/mingw/bin"
+val cmakePath = "D:/JetBrains/CLion/bin/cmake/win/x64/bin"
+val ninjaPath = "D:/JetBrains/CLion/bin/ninja/win/x64"
 val nativeBuildDir = layout.buildDirectory.dir("native")
 val nativeSourceDirAbsolute: String = projectDir.resolve("src/main/nativelib").absolutePath
 
@@ -81,8 +82,8 @@ tasks.register<Exec>("cmakeConfigure") {
         "-G", "Ninja",
         "-DCMAKE_BUILD_TYPE=Debug",
         "-DCMAKE_MAKE_PROGRAM=$ninjaPath/ninja.exe",
-        "-DCMAKE_C_COMPILER=$mingwPath/gcc.exe",
-        "-DCMAKE_CXX_COMPILER=$mingwPath/g++.exe"
+        "-DCMAKE_C_COMPILER=$gccPath/gcc.exe",
+        "-DCMAKE_CXX_COMPILER=$gppPath/g++.exe"
     )
 }
 

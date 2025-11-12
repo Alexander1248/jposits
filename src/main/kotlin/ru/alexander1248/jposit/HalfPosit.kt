@@ -6,6 +6,12 @@ class HalfPosit : Comparable<HalfPosit> {
     private constructor(value: Short) {
         this.value = value
     }
+    constructor(value: Float) {
+        this.value = value.toHalfPosit().value
+    }
+    constructor(value: Double) {
+        this.value = value.toHalfPosit().value
+    }
 
     fun toFloat(): Float =
         PositsJNI.posit16_toFloat(this.value)
