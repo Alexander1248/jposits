@@ -117,6 +117,7 @@ This will automatically:
 
 ### 🧩 Example usage
 
+- Java:
 ```java
 import ru.alexander1248.jposit.Posit;
 import ru.alexander1248.jposit.HalfPosit;
@@ -132,10 +133,11 @@ public class Example {
 }
 ```
 
+- Kotlin:
 ```kotlin
 import ru.alexander1248.jposit.Posit.Companion.toPosit
 
-fun test() {
+fun example() {
     val a = 1.5f.toPosit()
     val b = 2.25f.toPosit()
     val result = a * b
