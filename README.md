@@ -125,7 +125,7 @@ public class Example {
     public static void main(String[] args) {
         Posit a = new Posit(1.5f);
         Posit b = new Posit(2.25f);
-        Posit result = a.multiply(b);
+        Posit result = a.times(b);
 
         System.out.println("Result (float): " + result.toFloat());
     }
