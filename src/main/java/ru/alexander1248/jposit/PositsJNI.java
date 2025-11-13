@@ -8,8 +8,8 @@ class PositsJNI {
         init();
     }
 
-    public static native void set_debug(boolean debug);
-    public static native boolean get_debug();
+    public static native void set_flags(long flags);
+    public static native long get_flags();
 
     public static native void init();
 //    ====================================================================

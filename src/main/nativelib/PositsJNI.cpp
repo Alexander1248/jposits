@@ -321,7 +321,6 @@ posit32 fast_exp(const posit32 x) {
     const auto frac = LN_2_32 * (bx - cbx);
     const auto base = tailor_exp_approx(frac);
     auto parts = decomposeP32(posit32_t{base.value});
-    printf("DEBUG base=%f recomposed=%f parts.scale=%d\n", base.toDouble(), convertP32ToDouble(composeP32(parts)), parts.scale);
     parts.scale += static_cast<long>(cbx.toDouble());
 
     posit32 result;
@@ -382,18 +381,18 @@ T intel_sin(const T x, T sin_table[], T cos_table[]) {
 }
 
 //    ====================================================================
-//                                 DEBUG
+//                                 FLAGS
 //    ====================================================================
-bool debug = false;
+long long flags = 0;
 
-JNIEXPORT void JNICALL Java_ru_alexander1248_jposit_PositsJNI_set_1debug
-  (JNIEnv *, jclass, jboolean state) {
-    debug = state;
+JNIEXPORT void JNICALL Java_ru_alexander1248_jposit_PositsJNI_set_1flags
+  (JNIEnv *, jclass, const jlong flags_val) {
+    flags = flags_val;
 }
 
-JNIEXPORT jboolean JNICALL Java_ru_alexander1248_jposit_PositsJNI_get_1debug
+JNIEXPORT jlong JNICALL Java_ru_alexander1248_jposit_PositsJNI_get_1flags
   (JNIEnv *, jclass) {
-    return debug;
+    return flags;
 }
 
 //    ====================================================================
@@ -401,7 +400,7 @@ JNIEXPORT jboolean JNICALL Java_ru_alexander1248_jposit_PositsJNI_get_1debug
 //    ====================================================================
 JNIEXPORT void JNICALL Java_ru_alexander1248_jposit_PositsJNI_init
 (JNIEnv *, jclass) {
-    if (debug) std::cout << "Initializing SoftPosits..." << std::endl;
+    if (flags & 0x1) std::cout << "Initializing SoftPosits..." << std::endl;
     for (auto i = 0; i < table_size; i++) {
         const auto cos_val = cos(2 * M_PI * i / table_size);
         cos_table_32[i] = cos_val;
@@ -411,8 +410,8 @@ JNIEXPORT void JNICALL Java_ru_alexander1248_jposit_PositsJNI_init
         sin_table_32[i] = sin_val;
         sin_table_16[i] = sin_val;
     }
-    if (debug) std::cout << "Created " << table_size << " entries for sin and cos tables! "<< std::endl;
-    if (debug) std::cout << "SoftPosits initialized!" << std::endl;
+    if (flags & 0x1) std::cout << "Created " << table_size << " entries for sin and cos tables! "<< std::endl;
+    if (flags & 0x1) std::cout << "SoftPosits initialized!" << std::endl;
 }
 
 //    ====================================================================
