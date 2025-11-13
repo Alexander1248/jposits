@@ -215,7 +215,7 @@ class PositTest {
                 val rr = exp(a)
                 val tr = Posit.exp(a.toPosit())
                 softly.assertThat(tr.toDouble())
-                    .describedAs("Wrong tan in iteration $i of $a")
+                    .describedAs("Wrong exp in iteration $i of $a")
                     .isEqualTo(rr, Offset.offset(delta * (abs(rr) + 1) * 100))
             }
         }
@@ -228,7 +228,7 @@ class PositTest {
                 val rr = ln(a)
                 val tr = Posit.log(a.toPosit())
                 softly.assertThat(tr.toDouble())
-                    .describedAs("Wrong tan in iteration $i of $a")
+                    .describedAs("Wrong log in iteration $i of $a")
                     .isEqualTo(rr, Offset.offset(delta * (abs(rr) + 1)))
             }
         }

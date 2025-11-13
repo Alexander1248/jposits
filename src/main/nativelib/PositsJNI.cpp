@@ -5,12 +5,14 @@
 #include <include/softposit_cpp.h>
 #include <iostream>
 
+#include "include/internals.h"
+
 
 //    ====================================================================
 //                                  MATH
 //    ====================================================================
-static const posit32 LN_2 = log(2);
-static const posit32 ONE = 1;
+static const posit32 LN_2_32 = log(2);
+static const posit16 LN_2_16 = log(2);
 static const posit32 pi_2_32 = M_PI_2;
 static const posit16 pi_2_16 = M_PI_2;
 static constexpr auto table_size = 128;
@@ -31,6 +33,108 @@ inline posit16 fromJShort(const jshort val) {
     return p;
 }
 
+
+typedef struct {
+    bool sign;
+    long scale;          // итоговая степень (с учётом режима и exp)
+    posit32_t fraction;  // нормализованная мантисса без скрытой 1
+} posit32_parts;
+
+#include <bitset>
+posit32_parts decomposeP32(const posit32_t pA) {
+    ui32_p32 uA;
+    uint_fast32_t tmp=0;
+    uint_fast64_t expA=0;
+    bool signA=false;
+    int_fast32_t kA=0;
+
+    uA.p = pA;
+    uint_fast32_t uiA = uA.ui;
+
+    if (uA.ui == 0)
+        return posit32_parts{false, 0, pA};
+    if(uA.ui == 0x80000000)
+        return posit32_parts{true, 0, pA};
+
+    signA = signP32UI( uiA );
+    if(signA) uiA = (-uiA & 0xFFFFFFFF);
+    const bool regSA = signregP32UI(uiA);
+    tmp = (uiA<<2)&0xFFFFFFFF;
+    if (regSA){
+        while (tmp>>31){
+            kA++;
+            tmp= (tmp<<1) & 0xFFFFFFFF;
+        }
+    }
+    else{
+        kA=-1;
+        while (!(tmp>>31)){
+            kA--;
+            tmp= (tmp<<1) & 0xFFFFFFFF;
+        }
+        tmp&=0x7FFFFFFF;
+    }
+    expA = tmp >> 29; // 2 bits
+    tmp = (tmp<<3) & 0xFFFFFFFF; // move past exponent bits
+
+    const uint32_t frac_ui = (tmp >> 5) | 0x40000000;
+    const long scale = (kA << 2) + expA;
+    return posit32_parts{signA, scale, frac_ui};
+}
+
+typedef struct {
+    bool sign;
+    int32_t scale;        // чистая экспонента (kA * 2^es + exp)
+    posit16_t fraction;   // нормализованная мантисса в posit-виде
+} posit16_parts;
+posit16_parts decomposeP16(posit16_t pA) {
+    ui16_p16 uA;
+    uint_fast16_t tmp = 0;
+    bool signA = false;
+    int_fast32_t kA = 0;
+    uint_fast16_t expA = 0;
+
+    uA.p = pA;
+    uint_fast16_t uiA = uA.ui;
+
+    // --- особые случаи ---
+    if (uiA == 0)
+        return (posit16_parts){false, 0, pA};
+    if (uiA == 0x8000)
+        return (posit16_parts){true, 0, pA};
+
+    // --- знак ---
+    signA = signP16UI(uiA);
+    if (signA)
+        uiA = (-uiA & 0xFFFF);
+
+    // --- режим ---
+    const bool regSA = signregP16UI(uiA);
+    tmp = (uiA << 2) & 0xFFFF;
+
+    if (regSA) {
+        while (tmp >> 15) {
+            kA++;
+            tmp = (tmp << 1) & 0xFFFF;
+        }
+    } else {
+        kA = -1;
+        while (!(tmp >> 15)) {
+            kA--;
+            tmp = (tmp << 1) & 0xFFFF;
+        }
+        tmp &= 0x7FFF;
+    }
+
+    // --- экспонента ---
+    expA = tmp >> 14;
+    tmp = (tmp<<2) & 0xFFFF; // move past exponent bits
+
+    const uint16_t frac_ui = (tmp >> 4) | 0x4000;
+    const int scale = (kA << 1) + expA;
+    return posit16_parts{signA, scale, frac_ui};
+}
+
 posit32 sign(const posit32 posit) {
     const auto bits = posit.value;
     if (bits == 0) return 0;
@@ -48,56 +152,39 @@ T abs(const T posit) {
     return sign(posit) < 0 ? -posit : posit;
 }
 
-posit32 tailor_log_recursive( // NOLINT(*-no-recursion)
-    const posit32 x,
+template<typename T>
+T tailor_log_recursive( // NOLINT(*-no-recursion)
+    const T x,
     const int order,
     const int stopOrder) {
     if (order > stopOrder) return 1;
-    const posit32 order2 = order * 2;
-    const auto o = (order2 - ONE) / (order2 + ONE);
+    const auto order2 = order * 2;
+    const T o = static_cast<T>(order2 - 1) / (order2 + 1);
     return 1 + x * o * tailor_log_recursive(x, order + 1, stopOrder);
 }
 
-posit32 tailor_log_approx(const posit32 x) {
-    const auto z = (x - ONE) / (x + ONE);
+
+template<typename T>
+T tailor_log_approx(const T x) {
+    const auto z = (x - 1) / (x + 1);
     return 2 * z * tailor_log_recursive(z * z, 1, 4);
 }
 
+
+
 posit32 fast_log(const posit32 x) {
-    const auto bits = x.value;
-    if (bits & 0x80000000) return static_cast<jint>(posit32().toNaR().value);
-    const uint32_t regime_sign = (bits >> 30) & 1; // первый бит после знака
-    uint32_t regime_count = 1;
-
-    uint32_t tmp = bits << 2; // сдвигаем чтобы проверить остальные биты режима
-    while ((tmp >> 31 & 1) == regime_sign && regime_count < 31) {
-        regime_count++;
-        tmp <<= 1;
-    }
-
-    const uint32_t k = regime_sign ? (regime_count - 1) : -(regime_count - 1);
-    uint32_t exponent;
-    // 3. Exponent
-    uint32_t exp_shift = 1 + regime_count; // биты до экспоненты (1 знак + regime_count)
-    if (exp_shift >= 32) {
-        exponent = 0;
-    } else {
-        const uint32_t remaining_bits = 32 - exp_shift;
-        const uint32_t e_bits = remaining_bits < 2 ? remaining_bits : 2;
-        exponent = (bits << exp_shift) >> (32 - e_bits);
-        exp_shift += e_bits;
-    }
-    posit32 fraction;
-    // 4. Fraction
-    const uint32_t fraction_bits = 32 - exp_shift;
-    if (fraction_bits <= 0) {
-        fraction = 0.0;
-    } else {
-        const uint32_t frac_mask = (1u << fraction_bits) - 1;
-        const uint32_t frac_bits = bits & frac_mask;
-        fraction = static_cast<double>(frac_bits) / (1 << fraction_bits);
-    }
-    return tailor_log_approx(fraction + 1) + LN_2 * (k * 4 + exponent);
+    const auto parts = decomposeP32(posit32_t{x.value});
+    if (parts.sign) return posit32().toNaR();
+    auto frac = posit32();
+    frac.value = parts.fraction.v;
+    return posit32(parts.scale) * LN_2_32 + tailor_log_approx(frac);
+}
+posit16 fast_log(const posit16 x) {
+    const auto parts = decomposeP16(posit16_t{x.value});
+    if (parts.sign) return posit16().toNaR();
+    auto frac = posit16();
+    frac.value = parts.fraction.v;
+    return posit16(parts.scale) * LN_2_16 + tailor_log_approx(frac);
 }
 
 template<typename T>
@@ -139,11 +226,26 @@ T intel_sin(const T x, T sin_table[], T cos_table[]) {
 }
 
 //    ====================================================================
+//                                 DEBUG
+//    ====================================================================
+bool debug = false;
+
+JNIEXPORT void JNICALL Java_ru_alexander1248_jposit_PositsJNI_set_1debug
+  (JNIEnv *, jclass, jboolean state) {
+    debug = state;
+}
+
+JNIEXPORT jboolean JNICALL Java_ru_alexander1248_jposit_PositsJNI_get_1debug
+  (JNIEnv *, jclass) {
+    return debug;
+}
+
+//    ====================================================================
 //                                  INIT
 //    ====================================================================
 JNIEXPORT void JNICALL Java_ru_alexander1248_jposit_PositsJNI_init
 (JNIEnv *, jclass) {
-    std::cout << "Initializing SoftPosits..." << std::endl;
+    if (debug) std::cout << "Initializing SoftPosits..." << std::endl;
     for (auto i = 0; i < table_size; i++) {
         const auto cos_val = cos(2 * M_PI * i / table_size);
         cos_table_32[i] = cos_val;
@@ -153,7 +255,8 @@ JNIEXPORT void JNICALL Java_ru_alexander1248_jposit_PositsJNI_init
         sin_table_32[i] = sin_val;
         sin_table_16[i] = sin_val;
     }
-    std::cout << "SoftPosits initialized!" << std::endl;
+    if (debug) std::cout << "Created " << table_size << " entries for sin and cos tables! "<< std::endl;
+    if (debug) std::cout << "SoftPosits initialized!" << std::endl;
 }
 
 //    ====================================================================
@@ -284,8 +387,7 @@ JNIEXPORT jint JNICALL Java_ru_alexander1248_jposit_PositsJNI_posit32_1exp
 JNIEXPORT jint JNICALL Java_ru_alexander1248_jposit_PositsJNI_posit32_1log
 (JNIEnv *, jclass, const jint val) {
     const auto p = fromJInt(val);
-    // TODO: Implement log in posits only
-    const posit32 result = log(p.toDouble());
+    const posit32 result = fast_log(p);
     return static_cast<jint>(result.value);
 }
 
@@ -426,8 +528,7 @@ JNIEXPORT jshort JNICALL Java_ru_alexander1248_jposit_PositsJNI_posit16_1exp
 JNIEXPORT jshort JNICALL Java_ru_alexander1248_jposit_PositsJNI_posit16_1log
 (JNIEnv *, jclass, const jshort val) {
     const auto p = fromJShort(val);
-    // TODO: Implement log in posits only
-    const posit16 result = log(p.toDouble());
+    const posit16 result = fast_log(p);
     return static_cast<jshort>(result.value);
 }
 

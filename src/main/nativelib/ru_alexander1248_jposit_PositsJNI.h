@@ -9,6 +9,22 @@ extern "C" {
 #endif
 /*
  * Class:     ru_alexander1248_jposit_PositsJNI
+ * Method:    set_debug
+ * Signature: (Z)V
+ */
+JNIEXPORT void JNICALL Java_ru_alexander1248_jposit_PositsJNI_set_1debug
+  (JNIEnv *, jclass, jboolean);
+
+/*
+ * Class:     ru_alexander1248_jposit_PositsJNI
+ * Method:    get_debug
+ * Signature: ()Z
+ */
+JNIEXPORT jboolean JNICALL Java_ru_alexander1248_jposit_PositsJNI_get_1debug
+  (JNIEnv *, jclass);
+
+/*
+ * Class:     ru_alexander1248_jposit_PositsJNI
  * Method:    init
  * Signature: ()V
  */

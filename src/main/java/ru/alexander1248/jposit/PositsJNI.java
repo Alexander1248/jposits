@@ -8,6 +8,9 @@ class PositsJNI {
         init();
     }
 
+    public static native void set_debug(boolean debug);
+    public static native boolean get_debug();
+
     public static native void init();
 //    ====================================================================
 //                                  POSIT_32

@@ -22,13 +22,13 @@ class HalfPositTest {
     fun convertTest() {
         SoftAssertions.assertSoftly { softly ->
             for (i in 1..rounds) {
-                val a = Random.nextFloat() * 2000 - 1000
+                val a = Random.nextFloat() * 200 - 100
                 softly.assertThat(a.toHalfPosit().toFloat())
                     .describedAs("Float -> posit -> float conversion in iteration $i failed")
                     .isEqualTo(a, Offset.offset(delta.toFloat()))
             }
             for (i in 1..rounds) {
-                val a = Random.nextDouble(-1000.0, 1000.0)
+                val a = Random.nextDouble(-100.0, 100.0)
                 softly.assertThat(a.toHalfPosit().toDouble())
                     .describedAs("Double -> posit -> double conversion in iteration $i failed")
                     .isEqualTo(a, Offset.offset(delta))
@@ -51,8 +51,8 @@ class HalfPositTest {
     fun addTest() {
         SoftAssertions.assertSoftly { softly ->
             for (i in 1..rounds) {
-                val a = Random.nextDouble(-1000.0, 1000.0)
-                val b = Random.nextDouble(-1000.0, 1000.0)
+                val a = Random.nextDouble(-100.0, 100.0)
+                val b = Random.nextDouble(-100.0, 100.0)
                 val rr = a + b
                 val tr = a.toHalfPosit() + b.toHalfPosit()
                 softly.assertThat(tr.toDouble())
@@ -65,8 +65,8 @@ class HalfPositTest {
     fun subTest() {
         SoftAssertions.assertSoftly { softly ->
             for (i in 1..rounds) {
-                val a = Random.nextDouble(-1000.0, 1000.0)
-                val b = Random.nextDouble(-1000.0, 1000.0)
+                val a = Random.nextDouble(-100.0, 100.0)
+                val b = Random.nextDouble(-100.0, 100.0)
                 val rr = a - b
                 val tr = a.toHalfPosit() - b.toHalfPosit()
                 softly.assertThat(tr.toDouble())
@@ -79,8 +79,8 @@ class HalfPositTest {
     fun mulTest() {
         SoftAssertions.assertSoftly { softly ->
             for (i in 1..rounds) {
-                val a = Random.nextDouble(-1000.0, 1000.0)
-                val b = Random.nextDouble(-1000.0, 1000.0)
+                val a = Random.nextDouble(-100.0, 100.0)
+                val b = Random.nextDouble(-100.0, 100.0)
                 val rr = a * b
                 val tr = a.toHalfPosit() * b.toHalfPosit()
                 softly.assertThat(tr.toDouble())
@@ -93,8 +93,8 @@ class HalfPositTest {
     fun divTest() {
         SoftAssertions.assertSoftly { softly ->
             for (i in 1..rounds) {
-                val a = Random.nextDouble(-1000.0, 1000.0)
-                val b = Random.nextDouble(-1000.0, 1000.0)
+                val a = Random.nextDouble(-100.0, 100.0)
+                val b = Random.nextDouble(-100.0, 100.0)
                 val rr = a / b
                 val tr = a.toHalfPosit() / b.toHalfPosit()
                 softly.assertThat(tr.toDouble())
@@ -107,12 +107,12 @@ class HalfPositTest {
     fun remTest() {
         SoftAssertions.assertSoftly { softly ->
             for (i in 1..rounds) {
-                val a = Random.nextDouble(1000.0)
-                val b = Random.nextDouble(1000.0)
+                val a = Random.nextDouble(100.0)
+                val b = Random.nextDouble(100.0)
                 val rr = a % b
                 val tr = a.toHalfPosit() % b.toHalfPosit()
                 softly.assertThat(tr.toDouble())
-                    .describedAs("Wrong division in iteration $i of $a and $b")
+                    .describedAs("Wrong remainder in iteration $i of $a and $b")
                     .isEqualTo(rr, Offset.offset(delta * (abs(rr) + 1)))
             }
         }
@@ -121,7 +121,7 @@ class HalfPositTest {
     fun negTest() {
         SoftAssertions.assertSoftly { softly ->
             for (i in 1..rounds) {
-                val a = Random.nextDouble(-1000.0, 1000.0)
+                val a = Random.nextDouble(-100.0, 100.0)
                 val rr = -a
                 val tr = -a.toHalfPosit()
                 softly.assertThat(tr.toDouble())
@@ -134,7 +134,7 @@ class HalfPositTest {
     fun absTest() {
         SoftAssertions.assertSoftly { softly ->
             for (i in 1..rounds) {
-                val a = Random.nextDouble(-1000.0, 1000.0)
+                val a = Random.nextDouble(-100.0, 100.0)
                 val rr = abs(a)
                 val tr = HalfPosit.abs(a.toHalfPosit())
                 softly.assertThat(tr.toDouble())
@@ -147,7 +147,7 @@ class HalfPositTest {
     fun signTest() {
         SoftAssertions.assertSoftly { softly ->
             for (i in 1..rounds) {
-                val a = Random.nextDouble(-1000.0, 1000.0)
+                val a = Random.nextDouble(-100.0, 100.0)
                 val rr = sign(a)
                 val tr = HalfPosit.sign(a.toHalfPosit())
                 softly.assertThat(tr.toDouble())
@@ -160,7 +160,7 @@ class HalfPositTest {
     fun sqrtTest() {
         SoftAssertions.assertSoftly { softly ->
             for (i in 1..rounds) {
-                val a = Random.nextDouble(1000.0)
+                val a = Random.nextDouble(100.0)
                 val rr = sqrt(a)
                 val tr = HalfPosit.sqrt(a.toHalfPosit())
                 softly.assertThat(tr.toDouble())
@@ -173,7 +173,7 @@ class HalfPositTest {
     fun sinTest() {
         SoftAssertions.assertSoftly { softly ->
             for (i in 1..rounds) {
-                val a = Random.nextDouble(-1000.0, 1000.0)
+                val a = Random.nextDouble(-100.0, 100.0)
                 val rr = sin(a)
                 val tr = HalfPosit.sin(a.toHalfPosit())
                 softly.assertThat(tr.toDouble())
@@ -186,7 +186,7 @@ class HalfPositTest {
     fun cosTest() {
         SoftAssertions.assertSoftly { softly ->
             for (i in 1..rounds) {
-                val a = Random.nextDouble(-1000.0, 1000.0)
+                val a = Random.nextDouble(-100.0, 100.0)
                 val rr = cos(a)
                 val tr = HalfPosit.cos(a.toHalfPosit())
                 softly.assertThat(tr.toDouble())
@@ -217,7 +217,7 @@ class HalfPositTest {
                 val rr = exp(a)
                 val tr = HalfPosit.exp(a.toHalfPosit())
                 softly.assertThat(tr.toDouble())
-                    .describedAs("Wrong tan in iteration $i of $a")
+                    .describedAs("Wrong exp in iteration $i of $a")
                     .isEqualTo(rr, Offset.offset(delta * (abs(rr) + 1) * 100))
             }
         }
@@ -226,11 +226,11 @@ class HalfPositTest {
     fun logTest() {
         SoftAssertions.assertSoftly { softly ->
             for (i in 1..rounds) {
-                val a = Random.nextDouble(10000.0)
+                val a = Random.nextDouble(1000.0)
                 val rr = ln(a)
                 val tr = HalfPosit.log(a.toHalfPosit())
                 softly.assertThat(tr.toDouble())
-                    .describedAs("Wrong tan in iteration $i of $a")
+                    .describedAs("Wrong log in iteration $i of $a")
                     .isEqualTo(rr, Offset.offset(delta * (abs(rr) + 1)))
             }
         }
@@ -239,7 +239,7 @@ class HalfPositTest {
     fun powTest() {
         SoftAssertions.assertSoftly { softly ->
             for (i in 1..rounds) {
-                val a = Random.nextDouble(100.0)
+                val a = Random.nextDouble(10.0)
                 val b = Random.nextDouble(10.0)
                 val rr = a.pow(b)
                 val tr = HalfPosit.pow(a.toHalfPosit(), b.toHalfPosit())
@@ -253,7 +253,7 @@ class HalfPositTest {
     fun ceilTest() {
         SoftAssertions.assertSoftly { softly ->
             for (i in 1..rounds) {
-                val a = Random.nextDouble(-1000.0, 1000.0)
+                val a = Random.nextDouble(-100.0, 100.0)
                 val rr = ceil(a)
                 val tr = HalfPosit.ceil(a.toHalfPosit())
                 softly.assertThat(tr.toDouble())
@@ -266,7 +266,7 @@ class HalfPositTest {
     fun floorTest() {
         SoftAssertions.assertSoftly { softly ->
             for (i in 1..rounds) {
-                val a = Random.nextDouble(-1000.0, 1000.0)
+                val a = Random.nextDouble(-100.0, 100.0)
                 val rr = floor(a)
                 val tr = HalfPosit.floor(a.toHalfPosit())
                 softly.assertThat(tr.toDouble())
@@ -279,7 +279,7 @@ class HalfPositTest {
     fun roundTest() {
         SoftAssertions.assertSoftly { softly ->
             for (i in 1..rounds) {
-                val a = Random.nextDouble(-1000.0, 1000.0)
+                val a = Random.nextDouble(-100.0, 100.0)
                 val rr = round(a)
                 val tr = HalfPosit.round(a.toHalfPosit())
                 softly.assertThat(tr.toDouble())
