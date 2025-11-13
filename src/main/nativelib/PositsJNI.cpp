@@ -203,7 +203,6 @@ posit16_t composeP16(const posit16_parts& parts) {
     int writePos = 14;
     bool saturated = false;
 
-    // 1️⃣ — режим (regime)
     if (k >= 0) {
         for (int i = 0; i < (k + 1) && writePos >= 0; ++i) {
             ui |= (1u << writePos);
@@ -224,7 +223,6 @@ posit16_t composeP16(const posit16_parts& parts) {
             saturated = true;
     }
 
-    // 2️⃣ — экспонента и фракция
     if (!saturated) {
         // экспонента (1 бит)
         for (int b = ES - 1; b >= 0 && writePos >= 0; --b) {
@@ -244,7 +242,6 @@ posit16_t composeP16(const posit16_parts& parts) {
         }
     }
 
-    // 3️⃣ — знак
     if (parts.sign)
         ui = static_cast<uint16_t>((~ui + 1u) & 0xFFFF);
 

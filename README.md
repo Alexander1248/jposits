@@ -32,7 +32,7 @@ It provides full 16-bit and 32-bit Posit arithmetic implemented in native C via 
 |                               | `pow`                                  | ✅ Implemented           | Uses  `exp` and `log`  implementation                     |
 | **Data Structures**           | `Posit` (32-bit), `HalfPosit` (16-bit) | ✅ Implemented           | Includes full arithmetic, comparison, and conversion APIs |
 | **Conversion**                | To/from `float`, `double`              | ✅ Implemented natively  | IEEE 754 interop functions                                |
-| **Future Plans**              | `atan`, `asin`, `acos`, `hypot`, `fma` | ⏳ Planned               | Will be implemented in pure Posit arithmetic              |
+| **Future Plans**              | `atan`, `asin`, `acos`, `fma` | ⏳ Planned               | Will be implemented in pure Posit arithmetic              |
 
 ---
 
